@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # JDBC 配置
+    #url: jdbc:oracle:thin:@//198.87.104.23:1521/ora11a
+    #username: tradeinfo
+    #password: Tradeinfo1234
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.111.129:3306/houses?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
