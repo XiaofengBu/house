@@ -26,7 +26,7 @@ public class DruidConfig {
 	@Bean
 	public Filter statFilter(){
 		StatFilter filter = new StatFilter();
-		filter.setSlowSqlMillis(1);
+		filter.setSlowSqlMillis(5000);
 		filter.setLogSlowSql(true);
 		filter.setMergeSql(true);
 		return filter;

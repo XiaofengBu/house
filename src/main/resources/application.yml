@@ -19,7 +19,19 @@ spring:
       max-wait: 60000
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
-
+  freemarker:
+    charset: UTF-8
+    content-type: text/html;charset=UTF-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    suffix: .ftl
+    settings:
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      default_encoding: UTF-8
+    template-loader-path: classpath:/templates
+    check-template-location: true
+    cache: false
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 

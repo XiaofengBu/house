@@ -17,7 +17,6 @@ public class LogFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		logger.info("request is begin");
         chain.doFilter(request, response);
 	}
 
