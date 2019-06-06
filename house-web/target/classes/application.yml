@@ -1,0 +1,52 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    # JDBC 配置
+    #url: jdbc:oracle:thin:@//198.87.104.23:1521/ora11a
+    #username: tradeinfo
+    #password: Tradeinfo1234
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.111.133:3306/houses?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone = GMT
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+  freemarker:
+    charset: UTF-8
+    content-type: text/html;charset=UTF-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    suffix: .ftl
+    settings:
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      default_encoding: UTF-8
+      auto_import: common/common.ftl as common
+  mail:
+    host: smtp.163.com
+    username: spring_boot@163.com
+    password: abc123455
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+file:
+  path: H:\static
+
+domain:
+  name: 127.0.0.1:8090
+
+
