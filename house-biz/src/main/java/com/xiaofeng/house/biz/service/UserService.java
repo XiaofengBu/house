@@ -79,4 +79,64 @@ public class UserService {
     });
     return list;
   }
+
+  public void updateUser(User updateUser, String email) {
+    updateUser.setEmail(email);
+    BeanHelper.onUpdate(updateUser);
+    userMapper.update(updateUser);
+  }
+
+
+  public User getUserById(Long id) {
+    User queryUser = new User();
+    queryUser.setId(id);
+    List<User> users = getUserByQuery(queryUser);
+    if (!users.isEmpty()) {
+      return users.get(0);
+    }
+    return null;
+  }
+
+  public void resetNotify(String username) {
+    mailService.resetNotify(username);
+  }
+
+  /**
+   * 重置密码操作
+   * @param password
+   * @param key
+   */
+  @Transactional(rollbackFor=Exception.class)
+  public User reset(String key,String password){
+    String email = getResetEmail(key);
+    User updateUser = new User();
+    updateUser.setEmail(email);
+    updateUser.setPasswd(HashUtils.encryPassword(password));
+    userMapper.update(updateUser);
+    mailService.invalidateRestKey(key);
+    return getUserByEmail(email);
+  }
+
+
+
+  public User getUserByEmail(String email) {
+    User queryUser = new User();
+    queryUser.setEmail(email);
+    List<User> users = getUserByQuery(queryUser);
+    if (!users.isEmpty()) {
+      return users.get(0);
+    }
+    return null;
+  }
+
+  public String getResetEmail(String key) {
+    String email = "";
+    try {
+      email =  mailService.getResetEmail(key);
+    } catch (Exception ignore) {
+    }
+    return email;
+  }
+
+
 }

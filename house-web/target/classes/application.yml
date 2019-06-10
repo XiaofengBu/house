@@ -45,6 +45,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 file:
   path: H:\static
+  prefix: http://192.168.111.133:8081/images
 
 domain:
   name: 127.0.0.1:8090

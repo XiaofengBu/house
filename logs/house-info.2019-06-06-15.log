@@ -1,0 +1,3 @@
+2019-06-06 15:38:12.604 [http-nio-8090-exec-1] INFO  [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:179] http-nio-8090-exec-1cid - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-06-06 15:38:12.609 [http-nio-8090-exec-1] INFO  [org.springframework.web.servlet.DispatcherServlet:489] http-nio-8090-exec-1cid - FrameworkServlet 'dispatcherServlet': initialization started
+2019-06-06 15:38:12.791 [http-nio-8090-exec-1] INFO  [org.springframework.web.servlet.DispatcherServlet:508] http-nio-8090-exec-1cid - FrameworkServlet 'dispatcherServlet': initialization completed in 182 ms

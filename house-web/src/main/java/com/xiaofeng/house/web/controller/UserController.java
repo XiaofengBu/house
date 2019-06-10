@@ -4,6 +4,7 @@ import com.xiaofeng.house.biz.service.UserService;
 import com.xiaofeng.house.common.constants.CommonConstants;
 import com.xiaofeng.house.common.model.User;
 import com.xiaofeng.house.common.result.ResultMsg;
+import com.xiaofeng.house.common.utils.HashUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,5 +98,90 @@ public class UserController {
     session.invalidate();
     return "redirect:/index";
   }
+  // ---------------------个人信息页-------------------------
+  /**
+   * 1.能够提供页面信息 2.更新用户信息
+   *
+   * @param updateUser
+   * @param model
+   * @return
+   */
+  @RequestMapping("accounts/profile")
+  public String profile(HttpServletRequest req, User updateUser, ModelMap model) {
+    if (updateUser.getEmail() == null) {
+      return "/user/accounts/profile";
+    }
+    userService.updateUser(updateUser, updateUser.getEmail());
+    User query = new User();
+    query.setEmail(updateUser.getEmail());
+    List<User> users = userService.getUserByQuery(query);
+    req.getSession(true).setAttribute(CommonConstants.USER_ATTRIBUTE, users.get(0));
+    return "redirect:/accounts/profile?" + ResultMsg.successMsg("更新成功").asUrlParams();
+  }
 
+  /**
+   * 修改密码操作
+   *
+   * @param email
+   * @param password
+   * @param newPassword
+   * @param confirmPassword
+   * @param mode
+   * @return
+   */
+  @RequestMapping("accounts/changePassword")
+  public String changePassword(String email, String password, String newPassword,
+                               String confirmPassword, ModelMap mode) {
+    User user = userService.auth(email, password);
+    if (user == null || !confirmPassword.equals(newPassword)) {
+      return "redirct:/accounts/profile?" + ResultMsg.errorMsg("密码错误").asUrlParams();
+    }
+    User updateUser = new User();
+    updateUser.setPasswd(HashUtils.encryPassword(newPassword));
+    userService.updateUser(updateUser, email);
+    return "redirect:/accounts/profile?" + ResultMsg.successMsg("更新成功").asUrlParams();
+  }
+
+
+  /**
+   * 忘记密码
+   * @param username
+   * @param modelMap
+   * @return
+   */
+  @RequestMapping("accounts/remember")
+  public String remember(String username, ModelMap modelMap) {
+    if (StringUtils.isBlank(username)) {
+      return "redirect:/accounts/signin?" + ResultMsg.errorMsg("邮箱不能为空").asUrlParams();
+    }
+    userService.resetNotify(username);
+    modelMap.put("email", username);
+    return "/user/accounts/remember";
+  }
+
+  @RequestMapping("accounts/reset")
+  public String reset(String key,ModelMap modelMap){
+    String email = userService.getResetEmail(key);
+    if (StringUtils.isBlank(email)) {
+      return "redirect:/accounts/signin?" + ResultMsg.errorMsg("重置链接已过期").asUrlParams();
+    }
+    modelMap.put("email", email);
+    modelMap.put("success_key", key);
+    return "/user/accounts/reset";
+  }
+
+  @RequestMapping(value="accounts/resetSubmit")
+  public String resetSubmit(HttpServletRequest req,User user){
+    ResultMsg retMsg = UserHelper.validateResetPassword(user.getKey(), user.getPasswd(), user.getConfirmPasswd());
+    if (!retMsg.isSuccess() ) {
+      String suffix = "";
+      if (StringUtils.isNotBlank(user.getKey())) {
+        suffix = "email=" + userService.getResetEmail(user.getKey()) + "&key=" +  user.getKey() + "&";
+      }
+      return "redirect:/accounts/reset?"+ suffix  + retMsg.asUrlParams();
+    }
+    User updatedUser =  userService.reset(user.getKey(),user.getPasswd());
+    req.getSession(true).setAttribute(CommonConstants.USER_ATTRIBUTE, updatedUser);
+    return "redirect:/index?" + retMsg.asUrlParams();
+  }
 }
