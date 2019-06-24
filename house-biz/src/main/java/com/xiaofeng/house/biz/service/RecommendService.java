@@ -7,6 +7,7 @@ import com.xiaofeng.house.common.page.PageParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 public class RecommendService {
 
   private static final String HOT_HOUSE_KEY = "hot_house";
+  @Value("${redis.ip}")
+  private String IP;
+  @Value("${redis.port}")
+  private int PORT;
 
   private static final Logger logger = LoggerFactory.getLogger(RecommendService.class);
 
@@ -26,7 +31,7 @@ public class RecommendService {
 
   public void increase(Long id) {
     try {
-      Jedis jedis = new Jedis("127.0.0.1");
+      Jedis jedis = new Jedis(IP,PORT);
       jedis.zincrby(HOT_HOUSE_KEY, 1.0D, id + "");
       jedis.zremrangeByRank(HOT_HOUSE_KEY, 0, -11);// 0代表第一个元素,-1代表最后一个元素，保留热度由低到高末尾10个房产
       jedis.close();
@@ -38,7 +43,7 @@ public class RecommendService {
 
   public List<Long> getHot() {
     try {
-      Jedis jedis = new Jedis("127.0.0.1");
+      Jedis jedis = new Jedis(IP,PORT);
       Set<String> idSet = jedis.zrevrange(HOT_HOUSE_KEY, 0, -1);
       jedis.close();
       List<Long> ids = idSet.stream().map(Long::parseLong).collect(Collectors.toList());

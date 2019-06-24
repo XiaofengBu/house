@@ -1,16 +1,6 @@
 package com.xiaofeng.house.web.controller;
 
-import com.mooc.house.biz.service.*;
-import com.mooc.house.common.constants.CommonConstants;
-import com.mooc.house.common.constants.HouseUserType;
-import com.mooc.house.common.model.*;
-import com.mooc.house.common.page.PageData;
-import com.mooc.house.common.page.PageParams;
-import com.mooc.house.common.result.ResultMsg;
-import com.mooc.house.web.interceptor.UserContext;
-import com.xiaofeng.house.biz.service.AgencyService;
-import com.xiaofeng.house.biz.service.HouseService;
-import com.xiaofeng.house.biz.service.RecommendService;
+import com.xiaofeng.house.biz.service.*;
 import com.xiaofeng.house.common.constants.CommonConstants;
 import com.xiaofeng.house.common.constants.HouseUserType;
 import com.xiaofeng.house.common.model.*;

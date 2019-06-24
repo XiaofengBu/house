@@ -1,10 +1,10 @@
 package com.xiaofeng.house.biz.mapper;
 
-import com.mooc.house.common.model.Comment;
-import com.mooc.house.common.model.Community;
-import com.mooc.house.common.model.House;
-import com.mooc.house.common.model.UserMsg;
-import com.mooc.house.common.page.PageParams;
+import com.xiaofeng.house.common.model.Comment;
+import com.xiaofeng.house.common.model.Community;
+import com.xiaofeng.house.common.model.House;
+import com.xiaofeng.house.common.model.UserMsg;
+import com.xiaofeng.house.common.page.PageParams;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
